@@ -26,22 +26,22 @@ from lxml import etree
 # print(response_)
 
 
-newmap = dict()
-def parse_font():
-  font1 = TTFont('./ccw.ttf')
-  keys, values = [], []
-  for k, v in font1.getBestCmap().items():
-    if v.startswith('uni'):
-      newmap["u'\\u{:x}".format(k) + "'"]=chr(int(v[3:], 16))
-      keys.append(eval("u'\\u{:x}".format(k) + "'"))
-      values.append(chr(int(v[3:], 16)))
-    else:
-      keys.append("&#x{:x}".format(k))
-      values.append(v)
-  # print(keys, values)
-  return dict(zip(keys, values))
-parse_font()
-print(newmap)
+# newmap = dict()
+# def parse_font():
+#   font1 = TTFont('./ccw.ttf')
+#   keys, values = [], []
+#   for k, v in font1.getBestCmap().items():
+#     if v.startswith('uni'):
+#       newmap["u'\\u{:x}".format(k) + "'"]=chr(int(v[3:], 16))
+#       keys.append(eval("u'\\u{:x}".format(k) + "'"))
+#       values.append(chr(int(v[3:], 16)))
+#     else:
+#       keys.append("&#x{:x}".format(k))
+#       values.append(v)
+#   # print(keys, values)
+#   return dict(zip(keys, values))
+# parse_font()
+# print(newmap)
  
 
  
@@ -76,16 +76,33 @@ print(newmap)
 #   # utf_list = [eval(r"u'\u" + x[3:] + "'") 
 # # print(utf_list)
 
-# font = TTFont('ccw.ttf') #打开本地的ttf文件
-# bestcmap = font['cmap'].getBestCmap()
-# newmap = dict()
-# for key in bestcmap.keys():
-#   if re.search(r'(\d+)', bestcmap[key]) is None:
-#     continue
-#   value = int(re.search(r'(\d+)', bestcmap[key]).group(1)) - 1
-#   key = hex(key)
-#   newmap[key] = value
-# print(newmap)
+font = TTFont('ccw.ttf') #打开本地的ttf文件
+bestcmap = font['cmap'].getBestCmap()
+newmap = dict()
+for key in bestcmap.keys():
+  if re.search(r'(\d+)', bestcmap[key]) is None:
+    continue
+  value = int(re.search(r'(\d+)', bestcmap[key]).group(1)) - 1
+  key = hex(key)
+  newmap[key] = value
+print(newmap)
+
+# response_="&#x95f4;"
+# for key,value in newmap.items():
+#     key_ = key.replace('0x','&#x') + ';'
+#     if key_ in response_:
+#       print(key,key_,value)
+#       response_ = response_.replace(key_,str(value))
+# print(response_)
+
+
+
+
+# print("间".encode('unicode-escape'))
+# print(b'9'.hex())
+
+
+
 
 # 解析字体库font文件
 # font = TTFont('ccw.ttf')
@@ -97,3 +114,32 @@ print(newmap)
 #   print(eval("u'\\u" + uni[3:] + "'"))
 # # utf8List = [eval("u'\u" + uni[3:] + "'").encode("utf-8") for uni in uniList[1:]]
 # # print(utf8List)
+
+# content="间建罪及共和算9"
+# for val in content:
+#   print(val)
+#   uni=val.encode('unicode-escape')
+#   print(uni)
+#   val_code="uni"+uni[2:].decode('utf-8').upper()
+#   print(val_code)
+#   print("==========")
+
+
+# font2=TTFont('ccw.ttf')
+# uni_list2=font2.getGlyphOrder()[1:]
+# on_p1=[]
+# for i in uni_list2:
+#     pp1 = []
+#     p=font2['glyf'][i].coordinates
+#     for f in p:
+#         pp1.append(f)
+#     on_p1.append(pp1)
+# print(on_p1)
+
+# onlineFonts = TTFont('ccw.ttf')
+# uni_list = onlineFonts.getGlyphNames()[1:-1]
+# print(len(uni_list))
+# # 解析字体库
+# for i in range(100):
+#     # onlineGlyph = onlineFonts['glyf'][uni_list[i]]
+#     print(uni_list[i][3:].lower() )
