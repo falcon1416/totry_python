@@ -117,10 +117,8 @@ from lxml import etree
 
 # content="间建罪及共和算9"
 # for val in content:
-#   print(val)
 #   uni=val.encode('unicode-escape')
-#   print(uni)
-#   val_code="uni"+uni[2:].decode('utf-8').upper()
+#   val_code=uni[2:].decode('utf-8').upper()
 #   print(val_code)
 #   print("==========")
 
@@ -145,16 +143,42 @@ from lxml import etree
 #     print(uni_list[i][3:].lower() )
 
 
+##########################################
 
+with open('ccw.json', 'r') as f:
+  fontdict = json.load(f)
 
-
-
-
-font = TTFont('ccw.ttf')
-font_map = {}  # 用于存储当前页面所使用的自定义字体映射的字典
-for key, value in font.getBestCmap().items():   # 使用getBestCmap()获取字体文件中包含的映射关系
-  if value.startswith('uni'):   # 判断是否是uni编码
-    font_map[hex(key).upper()] =  chr(int(value[3:], 16))   # 这里的upper需看网页中显示的代码点是否是大写的，如果是小写的话，就不需要使用这个了 
+content="间建罪及共和算6"
+new_content=""
+for val in content:
+  if '\u4e00' <= val <= '\u9fff':
+    uni=val.encode('unicode-escape')
+    val_code="uni"+uni[2:].decode('utf-8').upper()
   else:
-    font_map[hex(key).upper()] = value
-print(font_map)
+    val_code="\\"+val.encode('utf-8').hex()
+    print(val_code)
+
+  if val_code in fontdict:
+    new_content=new_content+fontdict[val_code]
+  else:
+    new_content=new_content+val
+print(new_content)
+
+# print("间".encode('unicode-escape'))
+
+# font = TTFont('ccw.ttf')
+# font_map = {}  # 用于存储当前页面所使用的自定义字体映射的字典
+# for key, value in font.getBestCmap().items():   # 使用getBestCmap()获取字体文件中包含的映射关系
+#   if value.startswith('uni'):   # 判断是否是uni编码
+#     # print(key,value,chr(int(value[3:], 16)))
+#     font_map[hex(key).upper()] =  chr(int(value[3:], 16))   # 这里的upper需看网页中显示的代码点是否是大写的，如果是小写的话，就不需要使用这个了 
+#   else:
+#     font_map[hex(key).upper()] = value
+# # print(font_map)
+
+# for key, value in font_map.items():   # 根据之前得到的{name:真实数据}映射，将font_map中的name进行替换
+#   print(key,value)
+#   if value in fontdict:
+#     font_map[key] = fontdict[value]
+# print(font_map)
+##########################################
