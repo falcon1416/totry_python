@@ -12,3 +12,11 @@ class TotryCrawlerItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     pass
+
+class Item(scrapy.Item):
+    menuID = scrapy.Field()
+    proejctName = scrapy.Field()
+    deptName = scrapy.Field()
+    areaName = scrapy.Field()
+    seTime = scrapy.Field()
+    overView = scrapy.Field()
