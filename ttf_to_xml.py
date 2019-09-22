@@ -1,5 +1,6 @@
 
 #http://fontstore.baidu.com/static/editor/index.html#
+# https://blog.csdn.net/qq_42293758/article/details/89644453
 from fontTools.ttLib import TTFont
 import re,base64,io,json
 import requests
@@ -76,16 +77,16 @@ from lxml import etree
 #   # utf_list = [eval(r"u'\u" + x[3:] + "'") 
 # # print(utf_list)
 
-font = TTFont('ccw.ttf') #打开本地的ttf文件
-bestcmap = font['cmap'].getBestCmap()
-newmap = dict()
-for key in bestcmap.keys():
-  if re.search(r'(\d+)', bestcmap[key]) is None:
-    continue
-  value = int(re.search(r'(\d+)', bestcmap[key]).group(1)) - 1
-  key = hex(key)
-  newmap[key] = value
-print(newmap)
+# font = TTFont('ccw.ttf') #打开本地的ttf文件
+# bestcmap = font['cmap'].getBestCmap()
+# newmap = dict()
+# for key in bestcmap.keys():
+#   if re.search(r'(\d+)', bestcmap[key]) is None:
+#     continue
+#   value = int(re.search(r'(\d+)', bestcmap[key]).group(1)) - 1
+#   key = hex(key)
+#   newmap[key] = value
+# print(newmap)
 
 # response_="&#x95f4;"
 # for key,value in newmap.items():
@@ -100,7 +101,6 @@ print(newmap)
 
 # print("间".encode('unicode-escape'))
 # print(b'9'.hex())
-
 
 
 
@@ -143,3 +143,18 @@ print(newmap)
 # for i in range(100):
 #     # onlineGlyph = onlineFonts['glyf'][uni_list[i]]
 #     print(uni_list[i][3:].lower() )
+
+
+
+
+
+
+
+font = TTFont('ccw.ttf')
+font_map = {}  # 用于存储当前页面所使用的自定义字体映射的字典
+for key, value in font.getBestCmap().items():   # 使用getBestCmap()获取字体文件中包含的映射关系
+  if value.startswith('uni'):   # 判断是否是uni编码
+    font_map[hex(key).upper()] =  chr(int(value[3:], 16))   # 这里的upper需看网页中显示的代码点是否是大写的，如果是小写的话，就不需要使用这个了 
+  else:
+    font_map[hex(key).upper()] = value
+print(font_map)
