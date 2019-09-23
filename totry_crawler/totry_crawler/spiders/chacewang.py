@@ -16,6 +16,14 @@ class ChacewangSpider(scrapy.Spider):
     db=DB()
     csv=WriteCSV()
 
+    headers={
+        "Referer":"http://www.chacewang.com/ProjectSearch/CopyIndex?citycode=RegisterArea_HDDQ_Jiangsu_NanJin",
+        "User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36"
+    }
+    cookies={
+        "ASP.NET_SessionId":"2a5uvbgv3ckzf1gmn1zpbxdf"
+    }
+
     # 动态生成初始 URL
     def start_requests(self):
         # print("================")
@@ -37,19 +45,20 @@ class ChacewangSpider(scrapy.Spider):
         city=city_key
         pageindex=0
         #测试
+        # pageindex=-1
         # city="RegisterArea_HDDQ_Jiangsu_NanJin"
         # city_title="南京"
-        
+        # while pageindex<38:
+        #     pageindex=pageindex+1
+       
         start_url="http://www.chacewang.com/ProjectSearch/FindWithPager?sortField=CreateDateTime&sortOrder=desc&pageindex="+str(pageindex)+"&pageSize=20&cylb=&diqu="+city+"&bumen=&cylbName=&partition=&partitionName=&searchKey=&_="+str(t)
         # print(start_url)
-        yield scrapy.Request(url=start_url, callback=self.parse, meta={'title': city_title})
+        yield scrapy.Request(url=start_url,headers=self.headers,cookies=self.cookies, callback=self.parse, meta={'title': city_title})
         self.db.addLogByChace(currentIndex)
         print("================\n\n\n\n\n")
 
     def parse(self, response):
         title = response.meta['title']
-
-        # print("================")
         sites = json.loads(response.body_as_unicode())
         rows=sites['rows']
         for row in rows:
