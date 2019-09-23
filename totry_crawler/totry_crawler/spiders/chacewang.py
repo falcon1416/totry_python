@@ -5,20 +5,32 @@ from totry_crawler.parseDecode import ParseDecode
 from totry_crawler.items import Item
 from totry_crawler.db.db import DB
 from totry_crawler.db.writeCSV import WriteCSV
+from totry_crawler.sendemail import SendEmail
 
 from scrapy.utils.project import get_project_settings
 
 class ChacewangSpider(scrapy.Spider):
     name = 'chacewang'
+    city_title=""
     cookies={}
     # allowed_domains = ['chacewang.com']
     # start_urls = ['http://chacewang.com/']
     detail_url="http://www.chacewang.com/ProjectSearch/NewPeDetail/"
     
+    is_have_data=False
+
     pDecode=ParseDecode()
     db=DB()
     csv=WriteCSV()
 
+    # 完成
+    def close(self,spider, reason):
+        print("@@@@@@@@@@@@@@@@@@@@@@")
+        filepath=self.csv.filePath(self.city_title)
+        if reason =='finished' and self.is_have_data==True:
+            sEmail=SendEmail()
+            sEmail.send('查策网['+self.city_title+"]数据",filepath,self.city_title)
+        print("@@@@@@@@@@@@@@@@@@@@@@")
 
     # 动态生成初始 URL
     def start_requests(self):
@@ -34,29 +46,6 @@ class ChacewangSpider(scrapy.Spider):
         yield scrapy.FormRequest(url=url,formdata=data,callback=self.parse_login)
        
 
-        
-        # #计算需要爬的哪个key
-        # currentIndex=self.db.getIndexByChace()
-        # currentIndex=currentIndex+1
-        # if currentIndex >=len(urls):
-        #     currentIndex=0
-        
-        # city_key=urls[currentIndex]["key"]
-        # city_title=urls[currentIndex]["title"]
-        # city=city_key
-        # pageindex=0
-        # #测试
-        # # pageindex=-1
-        # # city="RegisterArea_HDDQ_Jiangsu_NanJin"
-        # # city_title="南京"
-        # # while pageindex<38:
-        # #     pageindex=pageindex+1
-       
-        # start_url="http://www.chacewang.com/ProjectSearch/FindWithPager?sortField=CreateDateTime&sortOrder=desc&pageindex="+str(pageindex)+"&pageSize=20&cylb=&diqu="+city+"&bumen=&cylbName=&partition=&partitionName=&searchKey=&_="+str(t)
-        # # print(start_url)
-        # yield scrapy.Request(url=start_url,cookies=self.cookies, callback=self.parse, meta={'title': city_title})
-        # self.db.addLogByChace(currentIndex)
-        # print("================\n\n\n\n\n")
     
     #登录解析
     def parse_login(self,response):
@@ -85,23 +74,22 @@ class ChacewangSpider(scrapy.Spider):
             currentIndex=0
         
         item=urls[currentIndex]
-        city_title=item["title"]
+        self.city_title=item["title"]
         city_code=item["key"]
 
         pageindex=0
         url=url+str(pageindex)+"&diqu="+city_code+"&_="+str(t)
-        print(city_title)
+        print(self.city_title)
         print(url)
-        yield scrapy.Request(url=url,cookies=self.cookies, callback=self.parse_list, meta={'city_title': city_title,"city_code":city_code,"pageindex":pageindex},dont_filter=True)
+        yield scrapy.Request(url=url,cookies=self.cookies, callback=self.parse_list, meta={"city_code":city_code,"pageindex":pageindex},dont_filter=True)
         self.db.addLogByChace(currentIndex)
         print("================\n\n\n\n\n")
         
     #解析列表
     def parse_list(self, response):
-        city_title = response.meta['city_title']
         city_code = response.meta['city_code']
         pageindex = response.meta['pageindex']
-        print("正在下载 %s(%s) 第%d页" % (city_title,city_code,(pageindex+1)))
+        print("正在下载 %s(%s) 第%d页" % (self.city_title,city_code,(pageindex+1)))
 
         sites = json.loads(response.body_as_unicode())
         if 'rows' not in sites:
@@ -112,6 +100,8 @@ class ChacewangSpider(scrapy.Spider):
             isHave=self.db.isHaveByChace(menuID)
             if isHave==True:
                 continue
+            
+            self.is_have_data=True
             
             #项目名称
             proejctName=row['PEName']
@@ -145,8 +135,8 @@ class ChacewangSpider(scrapy.Spider):
             item["supportFrom"]=supportFrom
 
             #结果保存到csv文件
-            self.csv.write(city_title,item)
-            
+            self.csv.write(self.city_title,item)
+
             yield item
             
 
@@ -160,5 +150,5 @@ class ChacewangSpider(scrapy.Spider):
             settings = get_project_settings()
             url=settings.get('LIST_URL')
             url=url+str(pageindex)+"&diqu="+city_code+"&_="+str(t)
-            yield scrapy.Request(url=url,cookies=self.cookies, callback=self.parse_list, meta={'city_title': city_title,"city_code":city_code,"pageindex":pageindex},dont_filter=True)
+            yield scrapy.Request(url=url,cookies=self.cookies, callback=self.parse_list, meta={"city_code":city_code,"pageindex":pageindex},dont_filter=True)
 

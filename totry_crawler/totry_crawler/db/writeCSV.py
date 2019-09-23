@@ -11,7 +11,10 @@ class WriteCSV:
   
   def write(self,filename,item):
     data_csv=[item["proejctName"],item["deptName"],item["areaName"],item["seTime"],item["overView"],item["supportFrom"]]
-    filename=self.dir+"/"+filename+".csv"
-    with open(filename, 'a', encoding='utf-8') as fp:
+    filename=self.filePath(filename)
+    with open(filename, 'a', encoding='utf-8-sig') as fp:
         writer = csv.writer(fp)
         writer.writerow(data_csv)
+  
+  def filePath(self,filename):
+    return self.dir+"/"+filename+".csv"
