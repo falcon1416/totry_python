@@ -12,6 +12,10 @@ class WriteCSV:
   def write(self,filename,item):
     data_csv=[item["proejctName"],item["deptName"],item["areaName"],item["seTime"],item["overView"],item["supportFrom"]]
     filename=self.filePath(filename)
+    #删除旧的文件
+    if os.path.exists(filename)==True:
+      os.remove(filename)
+
     with open(filename, 'a', encoding='utf-8-sig') as fp:
         writer = csv.writer(fp)
         writer.writerow(data_csv)
