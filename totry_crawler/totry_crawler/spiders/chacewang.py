@@ -3,6 +3,7 @@ import scrapy,time
 import json
 from totry_crawler.parseDecode import ParseDecode
 from totry_crawler.items import Item
+from totry_crawler.db.db import DB
 
 class ChacewangSpider(scrapy.Spider):
     name = 'chacewang'
@@ -11,6 +12,8 @@ class ChacewangSpider(scrapy.Spider):
     detail_url="http://www.chacewang.com/ProjectSearch/NewPeDetail/"
     
     pDecode=ParseDecode()
+    db=DB()
+
     # 动态生成初始 URL
     def start_requests(self):
         # print("================")
@@ -28,6 +31,11 @@ class ChacewangSpider(scrapy.Spider):
         rows=sites['rows']
         for row in rows:
             menuID=row['MainID']
+            isHave=self.db.isHaveByChace(menuID)
+            if isHave==True:
+                continue
+
+            self.db.addByChace(menuID)
             #项目名称
             proejctName=row['PEName']
             proejctName=self.pDecode.decode(proejctName)
