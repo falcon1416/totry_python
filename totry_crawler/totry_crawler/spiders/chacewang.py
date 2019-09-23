@@ -4,6 +4,7 @@ import json
 from totry_crawler.parseDecode import ParseDecode
 from totry_crawler.items import Item
 from totry_crawler.db.db import DB
+from totry_crawler.db.writeCSV import WriteCSV
 
 class ChacewangSpider(scrapy.Spider):
     name = 'chacewang'
@@ -13,19 +14,37 @@ class ChacewangSpider(scrapy.Spider):
     
     pDecode=ParseDecode()
     db=DB()
+    csv=WriteCSV()
 
     # 动态生成初始 URL
     def start_requests(self):
         # print("================")
         t = time.time()
         t=int(round(t * 1000))
-        city="RegisterArea_HDDQ_Anhui_HeFei"
+
+        #获取城市key
+        urls=[]
+        with open('./totry_crawler/city.json', 'r') as f:
+            urls = json.load(f)
+        #计算需要爬的哪个key
+        currentIndex=self.db.getIndexByChace()
+        currentIndex=currentIndex+1
+        if currentIndex >=len(urls):
+            currentIndex=0
+        
+        city_key=urls[currentIndex]["key"]
+        city_title=urls[currentIndex]["title"]
+        city=city_key
+        
         start_url="http://www.chacewang.com/ProjectSearch/FindWithPager?sortField=CreateDateTime&sortOrder=desc&pageindex=0&pageSize=20&cylb=&diqu="+city+"&bumen=&cylbName=&partition=&partitionName=&searchKey=&_="+str(t)
         # print(start_url)
-        yield scrapy.Request(url=start_url, callback=self.parse)
+        yield scrapy.Request(url=start_url, callback=self.parse, meta={'title': city_title})
+        self.db.addLogByChace(currentIndex)
         print("================\n\n\n\n\n")
 
     def parse(self, response):
+        title = response.meta['title']
+
         # print("================")
         sites = json.loads(response.body_as_unicode())
         rows=sites['rows']
@@ -35,7 +54,6 @@ class ChacewangSpider(scrapy.Spider):
             if isHave==True:
                 continue
 
-            self.db.addByChace(menuID)
             #项目名称
             proejctName=row['PEName']
             proejctName=self.pDecode.decode(proejctName)
@@ -61,6 +79,8 @@ class ChacewangSpider(scrapy.Spider):
             supportFrom=self.pDecode.decode(supportFrom)
             print("申报条件:"+supportFrom)
 
+            self.db.addByChace(menuID,proejctName,deptName,areaName,seTime,overView,supportFrom)
+
             item=Item()
             item["menuID"]=menuID
             item["proejctName"]=proejctName
@@ -70,7 +90,8 @@ class ChacewangSpider(scrapy.Spider):
             item["overView"]=overView
             item["supportFrom"]=supportFrom
             yield item
-
+            
+            self.csv.write(title,item)
             # url=self.detail_url+menuID+"?from=home"
             # yield scrapy.Request(url=url, callback=self.parse_detail)
             # break
