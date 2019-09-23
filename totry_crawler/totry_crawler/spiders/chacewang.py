@@ -48,6 +48,10 @@ class ChacewangSpider(scrapy.Spider):
             overView=row['OverView']
             overView=self.pDecode.decode(overView)
             print("申报条件:"+overView)
+            #支持力度
+            supportFrom=row['SupportFrom']
+            supportFrom=self.pDecode.decode(supportFrom)
+            print("申报条件:"+supportFrom)
 
             item=Item()
             item["menuID"]=menuID
@@ -56,6 +60,7 @@ class ChacewangSpider(scrapy.Spider):
             item["areaName"]=areaName
             item["seTime"]=seTime
             item["overView"]=overView
+            item["supportFrom"]=supportFrom
             yield item
 
             # url=self.detail_url+menuID+"?from=home"

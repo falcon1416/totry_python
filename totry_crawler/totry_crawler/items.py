@@ -20,3 +20,4 @@ class Item(scrapy.Item):
     areaName = scrapy.Field()
     seTime = scrapy.Field()
     overView = scrapy.Field()
+    supportFrom = scrapy.Field()
