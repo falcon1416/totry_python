@@ -9,6 +9,11 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
+LOGIN_URL="http://www.chacewang.com/Login/CheckLogin"
+LIST_URL="http://www.chacewang.com/ProjectSearch/FindWithPager?sortField=CreateDateTime&sortOrder=desc&pageSize=20&cylb=&bumen=&cylbName=&partition=&partitionName=&searchKey=&pageindex="
+USER_ACCOUNT="13611512980"
+USER_PASSWORD="g44daobsgzrxs6q"
+
 BOT_NAME = 'totry_crawler'
 
 SPIDER_MODULES = ['totry_crawler.spiders']
