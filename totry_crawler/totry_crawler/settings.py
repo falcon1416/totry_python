@@ -9,6 +9,8 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
+DB_PATH="./totry_crawler/db/totry.db"
+
 LOGIN_URL="http://www.chacewang.com/Login/CheckLogin"
 LIST_URL="http://www.chacewang.com/ProjectSearch/FindWithPager?sortField=CreateDateTime&sortOrder=desc&pageSize=20&cylb=&bumen=&cylbName=&partition=&partitionName=&searchKey=&pageindex="
 USER_ACCOUNT="13611512980"
@@ -70,9 +72,9 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'totry_crawler.pipelines.TotryCrawlerPipeline': 300,
-#}
+ITEM_PIPELINES = {
+   'totry_crawler.pipelines.TotryCrawlerPipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html

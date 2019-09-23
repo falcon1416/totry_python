@@ -11,5 +11,9 @@
   {"key":"RegisterArea_HDDQ_Jiangsu_YangZhou","title":"YangZhou"},
   {"key":"RegisterArea_HDDQ_Jiangsu_Zhenjiang","title":"Zhenjiang"},
   {"key":"RegisterArea_HDDQ_Jiangsu_TaiZhou","title":"TaiZhou"},
-  {"key":"RegisterArea_HDDQ_Jiangsu_SuQian","title":"SuQian"}
+  {"key":"RegisterArea_HDDQ_Jiangsu_SuQian","title":"SuQian"},
+
+  {"key":"RegisterArea_HDDQ_Anhui_HeFei","title":"HeFei"},
+  {"key":"RegisterArea_HDDQ_Anhui_WuHu","title":"HeFei"}
+  
 ]

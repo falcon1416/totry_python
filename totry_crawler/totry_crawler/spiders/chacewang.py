@@ -83,7 +83,7 @@ class ChacewangSpider(scrapy.Spider):
         currentIndex=currentIndex+1
         if currentIndex >=len(urls):
             currentIndex=0
-
+        
         item=urls[currentIndex]
         city_title=item["title"]
         city_code=item["key"]
@@ -92,7 +92,7 @@ class ChacewangSpider(scrapy.Spider):
         url=url+str(pageindex)+"&diqu="+city_code+"&_="+str(t)
         print(city_title)
         print(url)
-        yield scrapy.Request(url=url,cookies=self.cookies, callback=self.parse_list, meta={'city_title': city_title,"city_code":city_code,"pageindex":pageindex})
+        yield scrapy.Request(url=url,cookies=self.cookies, callback=self.parse_list, meta={'city_title': city_title,"city_code":city_code,"pageindex":pageindex},dont_filter=True)
         self.db.addLogByChace(currentIndex)
         print("================\n\n\n\n\n")
         
@@ -104,7 +104,6 @@ class ChacewangSpider(scrapy.Spider):
         print("正在下载 %s(%s) 第%d页" % (city_title,city_code,(pageindex+1)))
 
         sites = json.loads(response.body_as_unicode())
-        print(sites)
         if 'rows' not in sites:
             return
         rows=sites['rows']
@@ -112,8 +111,7 @@ class ChacewangSpider(scrapy.Spider):
             menuID=row['MainID']
             isHave=self.db.isHaveByChace(menuID)
             if isHave==True:
-                #后面的数据都有了,不用下载了
-                return
+                continue
             
             #项目名称
             proejctName=row['PEName']
@@ -135,7 +133,7 @@ class ChacewangSpider(scrapy.Spider):
             supportFrom=self.pDecode.decode(supportFrom)
 
             #结果保存到数据库
-            self.db.addByChace(menuID,proejctName,deptName,areaName,seTime,overView,supportFrom)
+            # self.db.addByChace(menuID,proejctName,deptName,areaName,seTime,overView,supportFrom)
             
             item=Item()
             item["menuID"]=menuID
@@ -145,8 +143,12 @@ class ChacewangSpider(scrapy.Spider):
             item["seTime"]=seTime
             item["overView"]=overView
             item["supportFrom"]=supportFrom
+
             #结果保存到csv文件
             self.csv.write(city_title,item)
+            
+            yield item
+            
 
         #检测下一页
         total= sites['total']
@@ -158,5 +160,5 @@ class ChacewangSpider(scrapy.Spider):
             settings = get_project_settings()
             url=settings.get('LIST_URL')
             url=url+str(pageindex)+"&diqu="+city_code+"&_="+str(t)
-            yield scrapy.Request(url=url,cookies=self.cookies, callback=self.parse_list, meta={'city_title': city_title,"city_code":city_code,"pageindex":pageindex})
+            yield scrapy.Request(url=url,cookies=self.cookies, callback=self.parse_list, meta={'city_title': city_title,"city_code":city_code,"pageindex":pageindex},dont_filter=True)
 
