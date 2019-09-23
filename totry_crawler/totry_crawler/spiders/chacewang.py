@@ -35,8 +35,12 @@ class ChacewangSpider(scrapy.Spider):
         city_key=urls[currentIndex]["key"]
         city_title=urls[currentIndex]["title"]
         city=city_key
+        pageindex=0
+        #测试
+        # city="RegisterArea_HDDQ_Jiangsu_NanJin"
+        # city_title="南京"
         
-        start_url="http://www.chacewang.com/ProjectSearch/FindWithPager?sortField=CreateDateTime&sortOrder=desc&pageindex=0&pageSize=20&cylb=&diqu="+city+"&bumen=&cylbName=&partition=&partitionName=&searchKey=&_="+str(t)
+        start_url="http://www.chacewang.com/ProjectSearch/FindWithPager?sortField=CreateDateTime&sortOrder=desc&pageindex="+str(pageindex)+"&pageSize=20&cylb=&diqu="+city+"&bumen=&cylbName=&partition=&partitionName=&searchKey=&_="+str(t)
         # print(start_url)
         yield scrapy.Request(url=start_url, callback=self.parse, meta={'title': city_title})
         self.db.addLogByChace(currentIndex)
