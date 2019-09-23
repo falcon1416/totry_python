@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy,time
-import json
+import json,os
 from totry_crawler.parseDecode import ParseDecode
 from totry_crawler.items import Item
 from totry_crawler.db.db import DB
@@ -30,6 +30,10 @@ class ChacewangSpider(scrapy.Spider):
         if reason =='finished' and self.is_have_data==True:
             sEmail=SendEmail()
             sEmail.send('查策网['+self.city_title+"]数据",filepath,self.city_title)
+        
+        #删除旧的文件
+        if os.path.exists(filepath)==True:
+            os.remove(filepath)
         print("@@@@@@@@@@@@@@@@@@@@@@")
 
     # 动态生成初始 URL
