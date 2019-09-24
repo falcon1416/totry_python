@@ -8,9 +8,9 @@ class SendEmail:
 
     mail_host = "smtp.163.com"  # 设置服务器
     mail_user = "falcon_13@163.com"  # 用户名
-    mail_pass = "ilove911"  # 口令
+    mail_pass = "woshi007"  # 口令
     sender = 'falcon_13@163.com'
-    receivers = "80513548@qq.com"  # 接收邮件，可设置为你的QQ邮箱或者其他邮箱
+    receivers = "80513548@qq.com,102141632@qq.com"  # 接收邮件，可设置为你的QQ邮箱或者其他邮箱
     content = "自动发送邮件"
 
     # 创建一个带附件的实例 
@@ -28,8 +28,7 @@ class SendEmail:
     message.attach(att)
 
     try:
-        smtpObj = smtplib.SMTP()
-        smtpObj.connect(mail_host, 25)  # 25 为 SMTP 端口号
+        smtpObj = smtplib.SMTP_SSL(mail_host,465)
         smtpObj.login(mail_user, mail_pass)
         smtpObj.sendmail(sender, receivers, message.as_string())
         print("邮件发送成功")
@@ -39,4 +38,4 @@ class SendEmail:
 
 if __name__ == "__main__":
   sm=SendEmail()
-  sm.send("测试邮箱","./ccw.json")
+  sm.send("测试邮箱","../data/20190924/YangZhou.csv","YangZhou")
