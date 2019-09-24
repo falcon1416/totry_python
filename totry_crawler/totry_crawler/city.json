@@ -161,6 +161,64 @@
   {"key":"RegisterArea_DBDQ_Liaoning_DanDongShi","title":"DanDongShi"},
   {"key":"RegisterArea_DBDQ_Liaoning_JinZhouShi","title":"JinZhouShi"},
   {"key":"RegisterArea_DBDQ_Liaoning_YingKouShi","title":"YingKouShi"},
-  {"key":"RegisterArea_DBDQ_Liaoning_PanJinShi","title":"PanJinShi"}
+  {"key":"RegisterArea_DBDQ_Liaoning_PanJinShi","title":"PanJinShi"},
 
+  {"key":"RegisterArea_HBDQ_Neimengu_HuHeHaoTeShi","title":"HuHeHaoTeShi"},
+  {"key":"RegisterArea_HBDQ_Neimengu_EErDuoSiShi","title":"EErDuoSiShi"},
+  {"key":"RegisterArea_HBDQ_Neimengu_BaYanNaoErShi","title":"BaYanNaoErShi"},
+
+  {"key":"RegisterArea_XBDQ_Ningxia_YinChuanShi","title":"YinChuanShi"},
+
+  {"key":"RegisterArea_HDDQ_Shandong_JiNan","title":"JiNan"},
+  {"key":"RegisterArea_HDDQ_Shandong_QingDao","title":"QingDao"},
+  {"key":"RegisterArea_HDDQ_Shandong_ZiBo","title":"ZiBo"},
+  {"key":"RegisterArea_HDDQ_Shandong_ZhaoZuang","title":"ZhaoZuang"},
+  {"key":"RegisterArea_HDDQ_Shandong_DongYing","title":"DongYing"},
+  {"key":"RegisterArea_HDDQ_Shandong_YanTai","title":"YanTai"},
+  {"key":"RegisterArea_HDDQ_Shandong_WeiFang","title":"WeiFang"},
+  {"key":"RegisterArea_HDDQ_Shandong_JiNing","title":"JiNing"},
+  {"key":"RegisterArea_HDDQ_Shandong_TaiAn","title":"TaiAn"},
+  {"key":"RegisterArea_HDDQ_Shandong_WeiHai","title":"WeiHai"},
+  {"key":"RegisterArea_HDDQ_Shandong_RiZhao","title":"RiZhao"},
+  {"key":"RegisterArea_HDDQ_Shandong_LaiWu","title":"LaiWu"},
+  {"key":"RegisterArea_HDDQ_Shandong_YiLin","title":"YiLin"},
+  {"key":"RegisterArea_HDDQ_Shandong_DeZhou","title":"DeZhou"},
+  {"key":"RegisterArea_HDDQ_Shandong_LiaoChen","title":"LiaoChen"},
+  {"key":"RegisterArea_HDDQ_Shandong_BinZhou","title":"BinZhou"},
+
+  {"key":"RegisterArea_HBDQ_Shanxi_TaiYuanShi","title":"TaiYuanShi"},
+  {"key":"RegisterArea_HBDQ_Shanxi_DaTongShi","title":"DaTongShi"},
+  {"key":"RegisterArea_HBDQ_Shanxi_YangQuanShi","title":"YangQuanShi"},
+  {"key":"RegisterArea_HBDQ_Shanxi_JinZhongShi","title":"JinZhongShi"},
+  {"key":"RegisterArea_HBDQ_Shanxi_XinZhouShi","title":"XinZhouShi"},
+
+  {"key":"RegisterArea_XBDQ_Shanxi_XiAnShi","title":"XiAnShi"},
+  {"key":"RegisterArea_XBDQ_Shanxi_TongChuanShi","title":"TongChuanShi"},
+  {"key":"RegisterArea_XBDQ_Shanxi_BaoJiShi","title":"BaoJiShi"},
+  {"key":"RegisterArea_XBDQ_Shanxi_XianYangShi","title":"XianYangShi"},
+  {"key":"RegisterArea_XBDQ_Shanxi_WeiNanShi","title":"WeiNanShi"},
+  {"key":"RegisterArea_XBDQ_Shanxi_YuLinShi","title":"YuLinShi"},
+
+  {"key":"RegisterArea_XNDQ_Sichuan_ChengDuShi","title":"ChengDuShi"},
+  {"key":"RegisterArea_XNDQ_Sichuan_ZiGongShi","title":"ZiGongShi"},
+  {"key":"RegisterArea_XNDQ_Sichuan_PanZhiHuaShi","title":"PanZhiHuaShi"},
+  {"key":"RegisterArea_XNDQ_Sichuan_LuZhouShi","title":"LuZhouShi"},
+  {"key":"RegisterArea_XNDQ_Sichuan_DeYangShi","title":"DeYangShi"},
+  {"key":"RegisterArea_XNDQ_Sichuan_MianYangShi","title":"MianYangShi"},
+  {"key":"RegisterArea_XNDQ_Sichuan_GuangYuanShi","title":"GuangYuanShi"},
+  {"key":"RegisterArea_XNDQ_Sichuan_SuiNingShi","title":"SuiNingShi"},
+  {"key":"RegisterArea_XNDQ_Sichuan_NeiJiangShi","title":"NeiJiangShi"},
+  {"key":"RegisterArea_XNDQ_Sichuan_MeiShanShi","title":"MeiShanShi"},
+  {"key":"RegisterArea_XNDQ_Sichuan_YiBinShi","title":"YiBinShi"},
+  {"key":"RegisterArea_XNDQ_Sichuan_GuangAnShi","title":"_GuangAnShi"},
+  {"key":"RegisterArea_XNDQ_Sichuan_ZiYangShi","title":"ZiYangShi"},
+  {"key":"RegisterArea_XNDQ_Sichuan_ABa","title":"ABa"},
+  {"key":"RegisterArea_XNDQ_Sichuan_LiangShan","title":"LiangShan"},
+
+  {"key":"RegisterArea_XBDQ_Xinjiang_WuLuMuQiShi","title":"WuLuMuQiShi"},
+
+  {"key":"RegisterArea_XNDQ_Yunnan_KunMingShi","title":"KunMingShi"},
+  {"key":"RegisterArea_XNDQ_Yunnan_BaoShanShi","title":"BaoShanShi"},
+  {"key":"RegisterArea_XNDQ_Yunnan_ChuXiong","title":"ChuXiong"}
+  
 ]
