@@ -1,4 +1,4 @@
-import smtplib
+import smtplib,os
 from email.mime.text import MIMEText
 from email.header import Header
 from email.mime.multipart import MIMEMultipart
@@ -22,10 +22,11 @@ class SendEmail:
     message.attach(MIMEText(content, 'plain', 'utf-8')) 
 
     # 附件
-    att = MIMEText(open(filepath, 'rb').read(), 'base64', 'utf-8')
-    att['Content-Type'] = 'application/octet-stream'
-    att['Content-Disposition'] = 'attachment; filename="'+filename+'.csv"'
-    message.attach(att)
+    if os.path.exists(filepath)==True:
+      att = MIMEText(open(filepath, 'rb').read(), 'base64', 'utf-8')
+      att['Content-Type'] = 'application/octet-stream'
+      att['Content-Disposition'] = 'attachment; filename="'+filename+'.csv"'
+      message.attach(att)
 
     try:
         smtpObj = smtplib.SMTP_SSL(mail_host,465)

@@ -27,7 +27,7 @@ class ChacewangSpider(scrapy.Spider):
     def close(self,spider, reason):
         print("@@@@@@@@@@@@@@@@@@@@@@")
         filepath=self.csv.filePath(self.city_title)
-        if reason =='finished' and self.is_have_data==True:
+        if reason =='finished':
             sEmail=SendEmail()
             sEmail.send('查策网['+self.city_title+"]数据",filepath,self.city_title)
         
