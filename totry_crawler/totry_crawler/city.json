@@ -16,6 +16,16 @@
   {"key":"RegisterArea_HDDQ_Anhui_HeFei","title":"HeFei"},
   {"key":"RegisterArea_HDDQ_Anhui_WuHu","title":"WuHu"},
   {"key":"RegisterArea_HDDQ_Anhui_BengBu","title":"BengBu"},
+  {"key":"RegisterArea_HDDQ_Anhui_HuaiNan","title":"HuaiNan"},
+  {"key":"RegisterArea_HDDQ_Anhui_MaAnShan","title":"MaAnShan"},
+  {"key":"RegisterArea_HDDQ_Anhui_Huaibei","title":"Huaibei"},
+  {"key":"RegisterArea_HDDQ_Anhui_TongLing","title":"TongLing"},
+  {"key":"RegisterArea_HDDQ_Anhui_HuangShan","title":"HuangShan"},
+  {"key":"RegisterArea_HDDQ_Anhui_ChuZhou","title":"ChuZhou"},
+  {"key":"RegisterArea_HDDQ_Anhui_FuYang","title":"FuYang"},
+  {"key":"RegisterArea_HDDQ_Anhui_ShuZhou","title":"ShuZhou"},
+  {"key":"RegisterArea_HDDQ_Anhui_HaoZhou","title":"HaoZhou"},
+  {"key":"RegisterArea_HDDQ_Anhui_ChiZhou","title":"ChiZhou"},
 
   {"key":"RegisterArea_HNDQ_Guangdong_Guangzhou","title":"Guangzhou"},
   {"key":"RegisterArea_HNDQ_Guangdong_SZ","title":"shenzhen"},
@@ -219,6 +229,9 @@
 
   {"key":"RegisterArea_XNDQ_Yunnan_KunMingShi","title":"KunMingShi"},
   {"key":"RegisterArea_XNDQ_Yunnan_BaoShanShi","title":"BaoShanShi"},
-  {"key":"RegisterArea_XNDQ_Yunnan_ChuXiong","title":"ChuXiong"}
+  {"key":"RegisterArea_XNDQ_Yunnan_ChuXiong","title":"ChuXiong"},
+
+  {"key":"RegisterArea_XBDQ_Qinghai_XiNingShi","title":"XiNingShi"}
+  
   
 ]
