@@ -6,6 +6,7 @@
 # See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 
 import sqlite3,time
+import pymysql
 from scrapy.utils.project import get_project_settings
 
 class TotryCrawlerPipeline(object):
@@ -33,3 +34,28 @@ class TotryCrawlerPipeline(object):
         self.cur.close()
         self.conn.close()
 
+class TotryCrawlerMySQLPipeline:
+    def open_spider(self, spider):
+        # 连接数据库
+        settings = get_project_settings()
+        self.connect = pymysql.connect(
+            host=settings.get('MYSQL_HOST'),
+            port=settings.get('MYSQL_PORT'),
+            db=settings.get('MYSQL_DBNAME'),
+            user=settings.get('MYSQL_USER'),
+            passwd=settings.get('MYSQL_PASSWD'),
+            charset='utf8',
+            use_unicode=True)
+        self.cur = self.connect.cursor()
+        self.connect.autocommit(True)
+    
+    def close_spider(self, spider):
+        self.cur.close()
+        self.connect.close()
+    
+    def process_item(self, item, spider):
+        menuID=item["menuID"]
+        self.cur.execute("select * from project where _id='"+menuID+"'")
+        rows=self.cur.fetchall()
+        if len(rows)>0:
+            return item

@@ -11,6 +11,13 @@
 
 DB_PATH="./totry_crawler/db/totry.db"
 
+MYSQL_HOST="127.0.0.1"
+MYSQL_PORT=3306
+MYSQL_DBNAME="Totry"
+MYSQL_USER="root"
+MYSQL_PASSWD=""
+
+
 LOGIN_URL="http://www.chacewang.com/Login/CheckLogin"
 LIST_URL="http://www.chacewang.com/ProjectSearch/FindWithPager?sortField=CreateDateTime&sortOrder=desc&pageSize=20&cylb=&bumen=&cylbName=&partition=&partitionName=&searchKey=&pageindex="
 USER_ACCOUNT="13611512980"
@@ -74,6 +81,7 @@ ROBOTSTXT_OBEY = True
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    'totry_crawler.pipelines.TotryCrawlerPipeline': 300,
+   'totry_crawler.pipelines.TotryCrawlerMySQLPipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

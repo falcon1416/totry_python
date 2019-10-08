@@ -6,7 +6,7 @@ from totry_crawler.items import Item
 from totry_crawler.db.db import DB
 from totry_crawler.db.writeCSV import WriteCSV
 from totry_crawler.sendemail import SendEmail
-
+from scrapy.selector import Selector
 from scrapy.utils.project import get_project_settings
 
 class ChacewangSpider(scrapy.Spider):
@@ -26,14 +26,14 @@ class ChacewangSpider(scrapy.Spider):
     # 完成
     def close(self,spider, reason):
         print("@@@@@@@@@@@@@@@@@@@@@@")
-        filepath=self.csv.filePath(self.city_title)
-        if reason =='finished':
-            sEmail=SendEmail()
-            sEmail.send('查策网['+self.city_title+"]数据",filepath,self.city_title)
+        # filepath=self.csv.filePath(self.city_title)
+        # if reason =='finished':
+        #     sEmail=SendEmail()
+        #     sEmail.send('查策网['+self.city_title+"]数据",filepath,self.city_title)
         
-        #删除旧的文件
-        if os.path.exists(filepath)==True:
-            os.remove(filepath)
+        # #删除旧的文件
+        # if os.path.exists(filepath)==True:
+        #     os.remove(filepath)
         print("@@@@@@@@@@@@@@@@@@@@@@")
 
     # 动态生成初始 URL
@@ -119,6 +119,13 @@ class ChacewangSpider(scrapy.Spider):
             #申报时间
             seTime=row['SETime']
             seTime=self.pDecode.decode(seTime)
+            # time_arr=seTime.split("-")
+            # startime=""
+            # endtime=""
+            # if len(time_arr) ==2:
+            #     startime=time_arr[0].strip()
+            #     endtime=time_arr[1].strip()
+
             #申报条件
             overView=row['OverView']
             overView=self.pDecode.decode(overView)
@@ -126,9 +133,6 @@ class ChacewangSpider(scrapy.Spider):
             supportFrom=row['SupportFrom']
             supportFrom=self.pDecode.decode(supportFrom)
 
-            #结果保存到数据库
-            # self.db.addByChace(menuID,proejctName,deptName,areaName,seTime,overView,supportFrom)
-            
             item=Item()
             item["menuID"]=menuID
             item["proejctName"]=proejctName
@@ -141,7 +145,11 @@ class ChacewangSpider(scrapy.Spider):
             #结果保存到csv文件
             self.csv.write(self.city_title,item)
 
-            yield item
+            #查询详情
+            detail_url=self.detail_url+menuID
+            yield scrapy.Request(url=detail_url,cookies=self.cookies, callback=self.parse_detail, meta={"item":item},dont_filter=True)
+            # yield item
+            return
             
 
         #检测下一页
@@ -155,4 +163,35 @@ class ChacewangSpider(scrapy.Spider):
             url=settings.get('LIST_URL')
             url=url+str(pageindex)+"&diqu="+city_code+"&_="+str(t)
             yield scrapy.Request(url=url,cookies=self.cookies, callback=self.parse_list, meta={"city_code":city_code,"pageindex":pageindex},dont_filter=True)
+    
+    def parse_detail(self, response):
+        # item = response.meta['item']
+        selector = Selector(response)
+        div = selector.xpath('//div[@class="detail-content project-detail"]')[0]
+        sub_divs=div.xpath('div')
+        for eachdiv in sub_divs:
+            title=eachdiv.xpath('p[@class="common-title"]/text()').extract()[0]
+            content=""
+            if title=="产业类别":
+                arr=eachdiv.xpath('ul[@class="list-unstyleds ccw-font-style"]/li/text()').extract()
+                for c in arr:
+                    content=content+c+"\t"
+                content=self.pDecode.decode(content)
+            elif title=="支持力度" or title=="申报材料" or title=="申报条件":
+                arr=eachdiv.xpath('p[@class="ccw-font-style"]/text()').extract()
+                for c in arr:
+                    content=content+c+"\n"
+                content=self.pDecode.decode(content)
+            else:
+                arr=eachdiv.xpath('p')
+                for i in range(1,len(arr)):
+                    c=arr[i]
+                    if len(c.xpath('a'))==0:
+                        content=content+c.xpath('text()').extract()[0]+"\n"
+                    else:
+                        content=content+c.xpath('a/text()').extract()[0]+"\n"
+
+            print(title)
+            print(content)
+
 
