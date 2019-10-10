@@ -21,3 +21,10 @@ class Item(scrapy.Item):
     seTime = scrapy.Field()
     overView = scrapy.Field()
     supportFrom = scrapy.Field()
+
+    materials= scrapy.Field()
+    support= scrapy.Field()
+    system= scrapy.Field()
+    source= scrapy.Field()
+    condition=scrapy.Field()
+    estate=scrapy.Field()

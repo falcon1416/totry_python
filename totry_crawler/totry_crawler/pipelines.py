@@ -8,6 +8,7 @@
 import sqlite3,time
 import pymysql
 from scrapy.utils.project import get_project_settings
+from totry_crawler.parseZoneLevel import ParseZoneLevel
 
 class TotryCrawlerPipeline(object):
   
@@ -59,3 +60,59 @@ class TotryCrawlerMySQLPipeline:
         rows=self.cur.fetchall()
         if len(rows)>0:
             return item
+        
+        # print(item)
+        seTime=item["seTime"]
+        time_arr=seTime.split("-")
+        startime=None
+        endtime=None
+        if len(time_arr) ==2:
+            startime=time_arr[0].strip().replace(".", "-")
+            endtime=time_arr[1].strip().replace(".", "-")
+        
+        pLevel=ParseZoneLevel()
+        areaInfo=pLevel.decode(item["areaName"])
+        # print(areaInfo)
+
+        if "estate" not in item:
+            item["estate"]=""
+        else:
+            item["estate"]=item["estate"].replace("'", "\'")
+
+        if "materials" not in item:
+            item["materials"]=""
+        else:
+            item["materials"]=item["materials"].replace("'", "\'")
+
+        if "support" not in item:
+            item["support"]=""
+        else:
+            item["support"]=item["support"].replace("'", "\'")
+
+        if "system" not in item:
+            item["system"]=""
+        else:
+            item["system"]=item["system"].replace("'", "\'")
+
+        if "source" not in item:
+            item["source"]=""
+        else:
+            item["source"]=item["source"].replace("'", "\'")
+
+        if "condition" not in item:
+            item["condition"]=""
+        else:
+            item["condition"]=item["condition"].replace("'", "\'")
+
+        if startime is not None:
+            sql="insert into project(`_id`,`name`,`dept`,`level`,`province`,`city`,`area`,`zone`,`startime`,`endtime`,`estate`,`condition`,`materials`,`support`,`system`,`source`,`create_time`)"
+            sql=sql+"value('"+menuID+"','"+item["proejctName"]+"','"+item["deptName"]+"','"+areaInfo["level"]+"','"+areaInfo["province"]+"','"+areaInfo["city"]+"','"+areaInfo["area"]+"','"+item["areaName"]+"','"+startime+"','"+endtime+"','"+item["estate"].strip()+"','"+item["condition"].strip()+"','"+item["materials"].strip()+"','"+item["support"].strip()+"','"+item["system"].strip()+"','"+item["source"].strip()+"','"+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"')"
+        else:
+            sql="insert into project(`_id`,`name`,`dept`,`level`,`province`,`city`,`area`,`zone`,`estate`,`condition`,`materials`,`support`,`system`,`source`,`create_time`)"
+            sql=sql+"value('"+menuID+"','"+item["proejctName"]+"','"+item["deptName"]+"','"+areaInfo["level"]+"','"+areaInfo["province"]+"','"+areaInfo["city"]+"','"+areaInfo["area"]+"','"+item["areaName"]+"','"+item["estate"].strip()+"','"+item["condition"].strip()+"','"+item["materials"].strip()+"','"+item["support"].strip()+"','"+item["system"].strip()+"','"+item["source"].strip()+"','"+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"')"
+        print("\n\n===================")
+        print(sql)
+        print("===================\n\n")
+        self.cur.execute(sql)
+
+     

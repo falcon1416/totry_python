@@ -83,7 +83,7 @@ class ChacewangSpider(scrapy.Spider):
 
         pageindex=0
         url=url+str(pageindex)+"&diqu="+city_code+"&_="+str(t)
-        print(self.city_title)
+        print("city_title:"+self.city_title)
         print(url)
         yield scrapy.Request(url=url,cookies=self.cookies, callback=self.parse_list, meta={"city_code":city_code,"pageindex":pageindex},dont_filter=True)
         self.db.addLogByChace(currentIndex)
@@ -137,7 +137,7 @@ class ChacewangSpider(scrapy.Spider):
             item["menuID"]=menuID
             item["proejctName"]=proejctName
             item["deptName"]=deptName
-            item["areaName"]=areaName
+            item["areaName"]=areaName+"("+city_code+")"
             item["seTime"]=seTime
             item["overView"]=overView
             item["supportFrom"]=supportFrom
@@ -149,7 +149,6 @@ class ChacewangSpider(scrapy.Spider):
             detail_url=self.detail_url+menuID
             yield scrapy.Request(url=detail_url,cookies=self.cookies, callback=self.parse_detail, meta={"item":item},dont_filter=True)
             # yield item
-            return
             
 
         #检测下一页
@@ -165,10 +164,11 @@ class ChacewangSpider(scrapy.Spider):
             yield scrapy.Request(url=url,cookies=self.cookies, callback=self.parse_list, meta={"city_code":city_code,"pageindex":pageindex},dont_filter=True)
     
     def parse_detail(self, response):
-        # item = response.meta['item']
+        item = response.meta['item']
         selector = Selector(response)
         div = selector.xpath('//div[@class="detail-content project-detail"]')[0]
         sub_divs=div.xpath('div')
+        
         for eachdiv in sub_divs:
             title=eachdiv.xpath('p[@class="common-title"]/text()').extract()[0]
             content=""
@@ -177,21 +177,34 @@ class ChacewangSpider(scrapy.Spider):
                 for c in arr:
                     content=content+c+"\t"
                 content=self.pDecode.decode(content)
+                item["estate"]=content
             elif title=="支持力度" or title=="申报材料" or title=="申报条件":
                 arr=eachdiv.xpath('p[@class="ccw-font-style"]/text()').extract()
                 for c in arr:
                     content=content+c+"\n"
                 content=self.pDecode.decode(content)
+                if title=="支持力度":
+                    item["support"]=content
+                if title=="申报材料":
+                    item["materials"]=content
+                if title=="申报条件":
+                    item["condition"]=content
             else:
                 arr=eachdiv.xpath('p')
                 for i in range(1,len(arr)):
                     c=arr[i]
+        
                     if len(c.xpath('a'))==0:
-                        content=content+c.xpath('text()').extract()[0]+"\n"
+                        if c.xpath('text()') is not None:
+                            content=content+c.xpath('text()').extract()[0]+"\n"
                     else:
                         content=content+c.xpath('a/text()').extract()[0]+"\n"
+                if title=="项目来源":
+                    item["source"]=content
+                if title=="申报系统":
+                    item["system"]=content
+        yield item
+            
 
-            print(title)
-            print(content)
 
 
