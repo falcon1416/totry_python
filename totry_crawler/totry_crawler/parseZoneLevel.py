@@ -8,6 +8,7 @@ class ParseZoneLevel:
   
   def decode(self,area):
     p = Pinyin()
+    print("\n\n\n\n\n zone_level_area  :"+area)
 
     for province in self.zonelevel:
       children=province["children"]

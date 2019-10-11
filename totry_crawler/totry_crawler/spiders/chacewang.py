@@ -26,14 +26,14 @@ class ChacewangSpider(scrapy.Spider):
     # 完成
     def close(self,spider, reason):
         print("@@@@@@@@@@@@@@@@@@@@@@")
-        # filepath=self.csv.filePath(self.city_title)
-        # if reason =='finished':
-        #     sEmail=SendEmail()
-        #     sEmail.send('查策网['+self.city_title+"]数据",filepath,self.city_title)
+        filepath=self.csv.filePath(self.city_title)
+        if reason =='finished':
+            sEmail=SendEmail()
+            sEmail.send('查策网['+self.city_title+"]数据",filepath,self.city_title)
         
-        # #删除旧的文件
-        # if os.path.exists(filepath)==True:
-        #     os.remove(filepath)
+        #删除旧的文件
+        if os.path.exists(filepath)==True:
+            os.remove(filepath)
         print("@@@@@@@@@@@@@@@@@@@@@@")
 
     # 动态生成初始 URL
@@ -137,7 +137,10 @@ class ChacewangSpider(scrapy.Spider):
             item["menuID"]=menuID
             item["proejctName"]=proejctName
             item["deptName"]=deptName
-            item["areaName"]=areaName+"("+city_code+")"
+            new_city_code=city_code
+            if new_city_code=="RegisterArea_HDDQ_Jiangsu_NanJin":
+                new_city_code="RegisterArea_HDDQ_Jiangsu_NanJing"
+            item["areaName"]=areaName+"("+new_city_code+")"
             item["seTime"]=seTime
             item["overView"]=overView
             item["supportFrom"]=supportFrom
