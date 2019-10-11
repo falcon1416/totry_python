@@ -20,7 +20,7 @@ MYSQL_PASSWD=""
 
 LOGIN_URL="http://www.chacewang.com/Login/CheckLogin"
 LIST_URL="http://www.chacewang.com/ProjectSearch/FindWithPager?sortField=CreateDateTime&sortOrder=desc&pageSize=20&cylb=&bumen=&cylbName=&partition=&partitionName=&searchKey=&pageindex="
-USER_ACCOUNT="13611512980"
+USER_ACCOUNT="13505173477" #780826cyz
 USER_PASSWORD="g44daobsgzrxs6q"
 
 BOT_NAME = 'totry_crawler'
